@@ -26,12 +26,14 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   return (
     <Stack
       width="100%"
-      bgcolor="primary.light"
+      bgcolor="white"
       direction="row"
       justifyContent="space-between"
       alignItems="center"
       p={4}
       borderRadius="10px"
+      border="1px solid"
+      borderColor="divider"
     >
       <Stack
         direction="row"

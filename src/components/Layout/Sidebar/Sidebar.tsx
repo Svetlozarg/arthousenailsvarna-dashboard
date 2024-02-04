@@ -2,7 +2,6 @@
 import { useState } from "react";
 import {
   Box,
-  Drawer,
   List,
   Divider,
   ListItem,
@@ -11,6 +10,7 @@ import {
   useTheme,
   Stack,
   ListItemIcon,
+  SwipeableDrawer,
 } from "@mui/material";
 import Topbar from "../Topbar/Topbar";
 import Logo from "../Logo/Logo";
@@ -21,8 +21,12 @@ import Link from "next/link";
 const styles = {
   drawer: {
     width: 240,
+    height: "100%",
     flexShrink: 0,
+
     "& .MuiDrawer-paper": {
+      boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.2)",
+      height: "100%",
       width: 240,
       boxSizing: "border-box",
     },
@@ -40,11 +44,32 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const [open, setOpen] = useState<boolean>(true);
   const pathname = usePathname();
 
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event &&
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setOpen(open);
+    };
+
   return (
     <Box sx={{ display: "flex" }}>
       <Topbar open={open} handleDrawer={() => setOpen(!open)} />
 
-      <Drawer sx={styles.drawer} variant="persistent" anchor="left" open={open}>
+      <SwipeableDrawer
+        sx={styles.drawer}
+        variant="persistent"
+        anchor="left"
+        open={open}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
         <Stack
           justifyContent="flex-end"
           alignItems="center"
@@ -68,14 +93,16 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             >
               <Link href={menuItem.to} style={{ width: "100%" }}>
                 <ListItemButton>
-                  <ListItemIcon>{<menuItem.icon />}</ListItemIcon>
+                  <ListItemIcon>
+                    {<menuItem.icon sx={{ color: "primary.main" }} />}
+                  </ListItemIcon>
                   <ListItemText primary={menuItem.title} />
                 </ListItemButton>
               </Link>
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </SwipeableDrawer>
 
       <Box
         sx={{

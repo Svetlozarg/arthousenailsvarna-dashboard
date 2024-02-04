@@ -50,14 +50,14 @@ const themeOptions: ThemeOptions = {
       primary: "#000000",
     },
     background: {
-      default: "#ffffff",
+      default: "#f7f5f5",
     },
     primary: {
-      main: "#F9E9EA",
+      main: "#d1b160",
       dark: "#f2f3f5",
     },
     secondary: {
-      main: "#ddb263",
+      main: "#f7e1e3",
     },
     error: {
       main: "#AD2323",

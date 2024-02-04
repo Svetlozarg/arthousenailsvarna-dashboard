@@ -21,7 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   message,
   variant = "contained",
-  color = "primary",
+  color = "secondary",
   type,
   sx,
   onClick,
@@ -32,7 +32,7 @@ const Button: React.FC<ButtonProps> = ({
       color={color}
       onClick={onClick}
       type={type as "button" | "reset" | "submit" | undefined}
-      sx={sx}
+      sx={{ ...sx }}
     >
       {icon && <>{icon} </>}
       {message}
