@@ -2,6 +2,8 @@
 import Alert, { AlertStatuses } from "@/components/MUIComponents/Alert";
 import Button from "@/components/MUIComponents/Button";
 import TextField from "@/components/MUIComponents/TextField";
+import { signIn } from "@/services/Auth/auth";
+import { SignInSnippet } from "@/services/Auth/authTypes";
 import { CircularProgress, Paper, Stack, Typography } from "@mui/material";
 import { Form, Formik } from "formik";
 import Image from "next/image";
@@ -38,7 +40,14 @@ const LoginPage = () => {
       setLoading(true);
       setFormStatus(null);
       setAlertMessage(null);
-      console.log(values);
+
+      const user: SignInSnippet = await signIn(values.email, values.password);
+
+      if (!user.success) {
+        setTimeout(() => {
+          throw new Error("Невалидни данни, моля опитайте отново!");
+        }, 500);
+      }
     } catch (err) {
       console.log((err as Error).message);
       setFormStatus("error");
@@ -57,7 +66,7 @@ const LoginPage = () => {
       <Paper sx={{ width: "100%", maxWidth: "600px", p: 4 }}>
         <Stack justifyContent="center" alignItems="center" gap={2}>
           <Image
-            src="https://ik.imagekit.io/obelussoft/logo_LrobyDgIb.png?updatedAt=1706031675190"
+            src="https://ik.imagekit.io/obelussoft/arthouse_logo_clean_szOaGb_aq.png?updatedAt=1707047013555"
             width={200}
             height={70}
             alt="logo"

@@ -8,6 +8,7 @@ import { Form, Formik } from "formik";
 import Link from "next/link";
 import { object, string, ref } from "yup";
 import Image from "next/image";
+import { signUp } from "@/services/Auth/auth";
 
 const fieldValidation = object({
   userName: string().required("Полето е задължително"),
@@ -44,13 +45,17 @@ const RegisterPage = () => {
       setLoading(true);
       setFormStatus(null);
       setAlertMessage(null);
-      console.log(values);
 
-      // if (newUser) {
-      //   window.location.assign("/auth/login");
-      // } else {
-      //   throw new Error(newUser.message);
-      // }
+      const newUser = await signUp(
+        values.userName,
+        values.email,
+        values.password
+      );
+      if (newUser) {
+        window.location.assign("/auth/login");
+      } else {
+        throw new Error(newUser.message);
+      }
     } catch (err) {
       console.log((err as Error).message);
       setFormStatus("error");
@@ -69,7 +74,7 @@ const RegisterPage = () => {
       <Paper sx={{ width: "100%", maxWidth: "600px", p: 4 }}>
         <Stack justifyContent="center" alignItems="center" gap={2}>
           <Image
-            src="https://ik.imagekit.io/obelussoft/logo_LrobyDgIb.png?updatedAt=1706031675190"
+            src="https://ik.imagekit.io/obelussoft/arthouse_logo_clean_szOaGb_aq.png?updatedAt=1707047013555"
             width={200}
             height={70}
             alt="logo"
