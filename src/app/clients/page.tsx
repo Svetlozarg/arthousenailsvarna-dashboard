@@ -42,7 +42,11 @@ const ClientsPage = () => {
   ];
 
   useEffect(() => {
-    (async () => {})();
+    (async () => {
+      setLoading(true);
+      setClientsData([]);
+      setLoading(false);
+    })();
   }, []);
 
   return (
