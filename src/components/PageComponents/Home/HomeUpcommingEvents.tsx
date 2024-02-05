@@ -66,7 +66,13 @@ const HomeUpcommingEvents: React.FC<HomeUpcommingEventsProps> = ({
         </Typography>
       </Stack>
 
-      <Stack direction="row" gap={2} flexWrap="wrap">
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        gap={2}
+        flexWrap="wrap"
+      >
         {weekData.map((day) => (
           <Stack
             key={day.date}
@@ -135,8 +141,15 @@ const HomeUpcommingEvents: React.FC<HomeUpcommingEventsProps> = ({
                       {event.treatment}
                     </Typography>
                     <Typography component="p" variant="body1">
-                      {new Date(event.start).toLocaleTimeString("bg-BG")} -{" "}
-                      {new Date(event.end).toLocaleTimeString("bg-BG")}
+                      {new Date(event.start).toLocaleTimeString("bg-BG", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }) +
+                        " - " +
+                        new Date(event.end).toLocaleTimeString("bg-BG", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
                     </Typography>
                   </Box>
                 </Stack>

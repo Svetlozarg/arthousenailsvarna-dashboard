@@ -51,7 +51,7 @@ const HomePage = () => {
 
   return (
     <Paper sx={{ mt: 4, p: 5 }}>
-      <Grid container spacing={2}>
+      <Grid container spacing={{ xs: 4, sm: 4, md: 2 }}>
         <Grid item xs={12} sm={12} md={6}>
           <Stack spacing={2}>
             <HomeWidget
