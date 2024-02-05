@@ -148,7 +148,7 @@ const SchedulerEditor = ({ scheduler, resources }: SchedulerEditorProps) => {
   };
 
   return (
-    <Stack width="35rem" p={2}>
+    <Stack width="100vw" maxWidth="35rem" p={2}>
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography component="h4" variant="h3">
           {scheduler.edited

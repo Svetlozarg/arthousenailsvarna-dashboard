@@ -94,6 +94,9 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
                 bgcolor:
                   pathname === menuItem.to ? theme.palette.grey[100] : "",
               }}
+              onClick={() => {
+                if (isSmallScreen) setOpen(false);
+              }}
               disablePadding
             >
               <Link href={menuItem.to} style={{ width: "100%" }}>

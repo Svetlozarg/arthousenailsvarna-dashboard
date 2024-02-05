@@ -61,7 +61,7 @@ const SchedulerPage = () => {
   }, []);
 
   return (
-    <Stack gap={4}>
+    <Stack width="100%" maxWidth="87vw" gap={4}>
       <PageHeader
         header="Клиенти"
         subheader="Всичко за вашите клиенти на едно място"
