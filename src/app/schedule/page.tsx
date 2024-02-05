@@ -11,6 +11,8 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import { callApi } from "@/services/callApi";
 import { getQueryClients } from "@/services/Clients/apiStaffGetQueries";
 import { GetQueryClientsSnippet } from "@/services/Clients/apiStaffSnippets";
+import { getQueryAllEvents } from "@/services/Events/apiEventsGetQueries";
+import { GetQueryAllEventsSnippet } from "@/services/Events/apiEventsSnippets";
 
 const SchedulerPage = () => {
   const [eventsData, setEventsData] = useState<ProcessedEvent[]>();
@@ -19,9 +21,26 @@ const SchedulerPage = () => {
   useEffect(() => {
     (async () => {
       try {
+        const eventsData = await callApi<GetQueryAllEventsSnippet>({
+          query: getQueryAllEvents,
+        });
+
         const clientsData = await callApi<GetQueryClientsSnippet>({
           query: getQueryClients,
         });
+
+        if (eventsData.success) {
+          const filteredEventsData = {
+            ...eventsData,
+            data: eventsData.data.map((event) => ({
+              ...event,
+              start: new Date(event.start),
+              end: new Date(event.end),
+            })),
+          };
+
+          setEventsData(filteredEventsData.data);
+        }
 
         if (clientsData.success) {
           const filteredStaffData = clientsData.data.map((client) => ({

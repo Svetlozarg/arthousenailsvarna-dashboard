@@ -9,6 +9,16 @@ import {
 } from "@aldabil/react-scheduler/types";
 import bg from "date-fns/locale/bg";
 import SchedulerEditor from "./SchedulerEditor";
+import { callApi } from "@/services/callApi";
+import {
+  PostQueryDeleteEventSnippet,
+  PostQueryUpdateEventSnippet,
+} from "@/services/Events/apiEventsSnippets";
+import {
+  postQueryDeleteEvent,
+  postQueryUpdateEvent,
+} from "@/services/Events/apiEventsPostQueries";
+import SchedulerVewerTitle from "./SchedulerVewerTitle";
 
 interface SchedulerProps {
   events?: ProcessedEvent[];
@@ -29,7 +39,78 @@ const Scheduler: React.FC<SchedulerProps> = ({
   resourceViewMode = "tabs",
   loading,
   showResources,
+  setEventsData,
 }) => {
+  const handleEventDragged = async (
+    droppedOn: Date,
+    updatedEvent: ProcessedEvent,
+    originalEvent: ProcessedEvent
+  ): Promise<void | ProcessedEvent> => {
+    try {
+      const client = resources.find(
+        (client) => client.client_id === originalEvent.client_id
+      );
+
+      if (!client) return;
+      const newEvent = await callApi<PostQueryUpdateEventSnippet>({
+        query: postQueryUpdateEvent(
+          {
+            title: originalEvent.title,
+            start: updatedEvent.start,
+            end: updatedEvent.end,
+            client_id: updatedEvent.client_id
+              ? updatedEvent.client_id
+              : originalEvent.client_id,
+            note: originalEvent.note,
+            treatment: originalEvent.treatment,
+          },
+          originalEvent.event_id.toString()
+        ),
+      });
+
+      if (newEvent.success) {
+        if (setEventsData) {
+          setEventsData((prev) => {
+            if (prev) {
+              const filteredEvents = prev.filter(
+                (event) => event.event_id !== originalEvent.event_id
+              );
+              return [
+                ...filteredEvents,
+                {
+                  ...originalEvent,
+                  start: updatedEvent.start,
+                  end: updatedEvent.end,
+                  client_id: updatedEvent.client_id
+                    ? updatedEvent.client_id
+                    : originalEvent.client_id,
+                },
+              ];
+            }
+          });
+        }
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleEventDelete = async (deletedId: string): Promise<string> => {
+    return new Promise(async (res: any) => {
+      try {
+        const deletedEvent = await callApi<PostQueryDeleteEventSnippet>({
+          query: postQueryDeleteEvent(deletedId),
+        });
+
+        if (deletedEvent.success) {
+          res(deletedId);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  };
+
   return (
     <MUIScheduler
       resourceViewMode={resourceViewMode}
@@ -44,10 +125,13 @@ const Scheduler: React.FC<SchedulerProps> = ({
       month={MONTH}
       week={WEEK}
       day={DAY}
+      onDelete={handleEventDelete}
+      onEventDrop={handleEventDragged}
       locale={bg}
       customEditor={(scheduler) => (
         <SchedulerEditor scheduler={scheduler} resources={resources} />
       )}
+      viewerTitleComponent={(event) => <SchedulerVewerTitle event={event} />}
     />
   );
 };

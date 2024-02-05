@@ -44,6 +44,19 @@ export const formatDate = (date: Date) => {
   return formattedDate;
 };
 
+export const getWeekData = () => {
+  const currentDate = new Date();
+  const daysOfWeek = ["Пон", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
+  const weekData = daysOfWeek.map((day, index) => {
+    const date = (currentDate.getDate() + index).toString().padStart(2, "0");
+    return {
+      day,
+      date,
+    };
+  });
+  return weekData;
+};
+
 export const USER_ID = getCookie("id");
 export const USERNAME = getCookie("username");
 export const USER_EMAIL = getCookie("email");

@@ -65,7 +65,6 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
           multiline={multiline}
           maxRows={maxRows}
           type={type}
-          // onChange={onChange}
           {...params}
         />
       )}
