@@ -62,7 +62,11 @@ const SchedulerEditor = ({ scheduler, resources }: SchedulerEditorProps) => {
     note: event?.note || "",
   };
 
-  const handleCalculateEndData = (e: any, values: SchedulerFormValues) => {
+  const handleCalculateEndData = (
+    e: any,
+    values: SchedulerFormValues,
+    handleChange: any
+  ) => {
     values.treatment = e.target.innerHTML;
     const selectedTreatment = TREATMENT_OPTIONS.find(
       (option) => option.title === e.target.innerHTML
@@ -72,6 +76,7 @@ const SchedulerEditor = ({ scheduler, resources }: SchedulerEditorProps) => {
       const start = values.start || new Date();
       const end = new Date(start.getTime() + durationInMinutes * 60000);
       values.end = end;
+      handleChange({ target: { name: "end", value: end } });
     }
   };
 
@@ -201,7 +206,9 @@ const SchedulerEditor = ({ scheduler, resources }: SchedulerEditorProps) => {
                   value={values.treatment}
                   helperText={touched["treatment"] && errors["treatment"]}
                   error={touched["treatment"] && !!errors["treatment"]}
-                  onChange={(e: any) => handleCalculateEndData(e, values)}
+                  onChange={(e: any) =>
+                    handleCalculateEndData(e, values, handleChange)
+                  }
                 />
 
                 <DateAndTimePicker

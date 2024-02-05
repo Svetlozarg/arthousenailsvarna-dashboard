@@ -41,7 +41,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const theme = useTheme();
-  const [open, setOpen] = useState<boolean>(true);
+  const [open, setOpen] = useState<boolean>(window.innerWidth > 768);
   const pathname = usePathname();
 
   const toggleDrawer =
@@ -61,7 +61,6 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   return (
     <Box sx={{ display: "flex" }}>
       <Topbar open={open} handleDrawer={() => setOpen(!open)} />
-
       <SwipeableDrawer
         sx={styles.drawer}
         variant="persistent"
@@ -77,11 +76,18 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             padding: theme.spacing(0, 1),
             ...theme.mixins.toolbar,
           }}
+          onClick={() => {
+            if (window.innerWidth < 768) setOpen(false);
+          }}
         >
           <Logo />
         </Stack>
         <Divider />
-        <List>
+        <List
+          onClick={() => {
+            if (window.innerWidth < 768) setOpen(false);
+          }}
+        >
           {SIDEBAR_MENU.map((menuItem) => (
             <ListItem
               key={menuItem.title}

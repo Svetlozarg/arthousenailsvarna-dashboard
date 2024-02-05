@@ -34,6 +34,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       borderRadius="10px"
       border="1px solid"
       borderColor="divider"
+      flexWrap="wrap"
+      gap={{ xs: 2, sm: 2 }}
     >
       <Stack
         direction="row"

@@ -12,8 +12,6 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({ label, value, icon }) => {
   return (
     <Stack
       width="100%"
-      maxWidth={{ xs: "100%", md: "25rem" }}
-      minWidth="25rem"
       direction="row"
       justifyContent="center"
       alignItems="center"
@@ -24,7 +22,12 @@ const HomeWidget: React.FC<HomeWidgetProps> = ({ label, value, icon }) => {
     >
       {icon}
       <Stack gap={1}>
-        <Typography component="p" variant="h3" color="common.white">
+        <Typography
+          component="p"
+          variant="h3"
+          color="common.white"
+          textAlign="center"
+        >
           {label}
         </Typography>
         <Typography
