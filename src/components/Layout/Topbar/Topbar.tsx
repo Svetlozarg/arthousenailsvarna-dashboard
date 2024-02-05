@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import {
   IconButton,
+  Menu,
+  MenuItem,
   Stack,
   Toolbar,
-  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -23,6 +24,14 @@ interface TopbarProps {
 const Topbar: React.FC<TopbarProps> = ({ open, handleDrawer }) => {
   const theme = useTheme();
   const [userName, setUserName] = useState<string>();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     if (USERNAME) {
@@ -54,26 +63,34 @@ const Topbar: React.FC<TopbarProps> = ({ open, handleDrawer }) => {
           </IconButton>
         </Toolbar>
 
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          pr={1}
-          gap={2}
-        >
+        <IconButton sx={{ p: 0, pr: 2 }} disableRipple onClick={handleClick}>
           <Stack justifyContent="center" alignItems="center">
             <AccountCircleIcon sx={{ fontSize: "2.5rem" }} />
             <Typography component="p" variant="body1">
               {userName}
             </Typography>
           </Stack>
+        </IconButton>
 
-          <Tooltip title="Излез">
-            <IconButton onClick={signOut}>
-              <LogoutIcon color="primary" sx={{ fontSize: "1.5rem" }} />
-            </IconButton>
-          </Tooltip>
-        </Stack>
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={openMenu}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              handleClose();
+              signOut();
+            }}
+          >
+            <LogoutIcon sx={{ fontSize: "1.5rem", mr: 1 }} />
+            Излез
+          </MenuItem>
+        </Menu>
       </Stack>
     </AppBar>
   );
