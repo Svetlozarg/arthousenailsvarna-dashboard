@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   List,
@@ -11,6 +11,7 @@ import {
   Stack,
   ListItemIcon,
   SwipeableDrawer,
+  useMediaQuery,
 } from "@mui/material";
 import Topbar from "../Topbar/Topbar";
 import Logo from "../Logo/Logo";
@@ -41,8 +42,13 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ children }) => {
   const theme = useTheme();
-  const [open, setOpen] = useState<boolean>(false);
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = useState<boolean>(isSmallScreen);
   const pathname = usePathname();
+
+  useEffect(() => {
+    setOpen(!isSmallScreen);
+  }, [isSmallScreen]);
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
