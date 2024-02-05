@@ -12,15 +12,27 @@ import {
   GetQueryAllEventsSnippet,
 } from "@/services/Events/apiEventsSnippets";
 import { getWeekData } from "@/helpers/helpers";
+import { GetQueryClientsSnippet } from "@/services/Clients/apiStaffSnippets";
+import { getQueryClients } from "@/services/Clients/apiStaffGetQueries";
 
 const HomePage = () => {
   const [eventsData, setEventsData] = useState<Event[]>();
+  const [totalClients, setTotalClients] = useState<number>(0);
+  const [totalEvents, setTotalEvents] = useState<number>(0);
 
   useEffect(() => {
     (async () => {
+      const clientsData = await callApi<GetQueryClientsSnippet>({
+        query: getQueryClients,
+      });
+
       const eventsData = await callApi<GetQueryAllEventsSnippet>({
         query: getQueryAllEvents,
       });
+
+      if (clientsData.success) {
+        setTotalClients(clientsData.data.length);
+      }
 
       const filteredEvents = eventsData.data.filter((event) => {
         const eventDate = new Date(event.start).getDate();
@@ -29,6 +41,10 @@ const HomePage = () => {
 
       if (eventsData.success) {
         setEventsData(filteredEvents);
+        setTotalEvents(
+          eventsData.data.filter((event) => new Date(event.start) >= new Date())
+            .length
+        );
       }
     })();
   }, []);
@@ -40,7 +56,7 @@ const HomePage = () => {
           <Stack spacing={2}>
             <HomeWidget
               label="Общо Клиенти"
-              value="100"
+              value={totalClients.toString()}
               icon={
                 <SupervisedUserCircleIcon
                   sx={{ fontSize: "5rem", color: "common.white" }}
@@ -50,7 +66,7 @@ const HomePage = () => {
 
             <HomeWidget
               label="Общо Часове"
-              value="100"
+              value={totalEvents.toString()}
               icon={
                 <CalendarMonthIcon
                   sx={{ fontSize: "5rem", color: "common.white" }}

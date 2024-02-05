@@ -3,6 +3,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Skeleton,
   Stack,
   Toolbar,
   Typography,
@@ -63,12 +64,21 @@ const Topbar: React.FC<TopbarProps> = ({ open, handleDrawer }) => {
           </IconButton>
         </Toolbar>
 
-        <IconButton sx={{ p: 0, pr: 2 }} disableRipple onClick={handleClick}>
+        <IconButton
+          sx={{ p: 0, pr: 2, color: "common.black" }}
+          disableRipple
+          onClick={handleClick}
+        >
           <Stack justifyContent="center" alignItems="center">
             <AccountCircleIcon sx={{ fontSize: "2.5rem" }} />
-            <Typography component="p" variant="body1">
-              {userName}
-            </Typography>
+
+            {userName ? (
+              <Typography component="p" variant="body1">
+                {userName}
+              </Typography>
+            ) : (
+              <Skeleton variant="rounded" width={100} height={20} />
+            )}
           </Stack>
         </IconButton>
 
