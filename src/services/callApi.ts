@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { CallApiParams } from "./apiTypes";
 import { USER_ACCESSTOKEN } from "@/helpers/helpers";
-// import { signOut } from "./Auth/auth";
+import { signOut } from "./Auth/auth";
 
 export const API_LINK_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -33,7 +33,7 @@ export const callApi = async <T>(params: CallApiParams): Promise<T> => {
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.status === 401) {
-        // signOut();
+        signOut();
         throw new Error("Access token has expired");
       } else {
         console.log("API err ", error);
@@ -41,7 +41,7 @@ export const callApi = async <T>(params: CallApiParams): Promise<T> => {
       }
     }
   } else {
-    // signOut();
+    signOut();
     throw new Error("Access Cookie is not defined");
   }
 };
