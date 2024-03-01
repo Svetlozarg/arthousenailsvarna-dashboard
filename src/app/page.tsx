@@ -42,8 +42,16 @@ const HomePage = () => {
       if (eventsData.success) {
         setEventsData(filteredEvents);
         setTotalEvents(
-          eventsData.data.filter((event) => new Date(event.start) >= new Date())
-            .length
+          eventsData.data.filter((event) => {
+            const eventDate = new Date(event.start);
+            const currentDate = new Date();
+            const endOfMonth = new Date(
+              currentDate.getFullYear(),
+              currentDate.getMonth() + 1,
+              0
+            );
+            return eventDate >= currentDate && eventDate <= endOfMonth;
+          }).length
         );
       }
     })();
@@ -65,7 +73,7 @@ const HomePage = () => {
             />
 
             <HomeWidget
-              label="Оставащи Часове"
+              label="Оставащи Часове за Месец"
               value={totalEvents.toString()}
               icon={
                 <CalendarMonthIcon
