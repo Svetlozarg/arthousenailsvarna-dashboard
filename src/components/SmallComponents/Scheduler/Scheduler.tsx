@@ -1,6 +1,6 @@
 "use client";
 import { Scheduler as MUIScheduler } from "@aldabil/react-scheduler";
-import { DAY, FIELDS, MONTH, RESOURCE_FIELDS, WEEK } from "./schedulerData";
+import { DAY, FIELDS, RESOURCE_FIELDS, WEEK } from "./schedulerData";
 import { SchedulerLocale } from "@/components/SmallComponents/Scheduler/SchedulerLocale";
 import { View } from "@aldabil/react-scheduler/components/nav/Navigation";
 import {
@@ -122,7 +122,6 @@ const Scheduler: React.FC<SchedulerProps> = ({
       resourceFields={RESOURCE_FIELDS}
       fields={FIELDS(resources)}
       loading={loading}
-      month={MONTH}
       week={WEEK}
       day={DAY}
       onDelete={handleEventDelete}
