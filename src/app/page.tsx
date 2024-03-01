@@ -65,7 +65,7 @@ const HomePage = () => {
             />
 
             <HomeWidget
-              label="Общо Часове"
+              label="Оставащи Часове"
               value={totalEvents.toString()}
               icon={
                 <CalendarMonthIcon

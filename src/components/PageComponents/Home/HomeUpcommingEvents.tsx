@@ -36,6 +36,10 @@ const HomeUpcommingEvents: React.FC<HomeUpcommingEventsProps> = ({
     }
   }, [eventsData, selectedDate]);
 
+  const sortedEvents = filteredEvents.sort(
+    (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime()
+  );
+
   return (
     <Stack justifyContent="flex-start" alignItems="center" gap={2}>
       <Typography component="h4" variant="h2" textAlign="center">
@@ -113,14 +117,14 @@ const HomeUpcommingEvents: React.FC<HomeUpcommingEventsProps> = ({
         gap={4}
       >
         {eventsData ? (
-          filteredEvents.length === 0 ? (
+          sortedEvents.length === 0 ? (
             <Stack justifyContent="center" alignItems="center">
               <Typography component="p" variant="body1">
                 Няма предстоящи часове
               </Typography>
             </Stack>
           ) : (
-            filteredEvents.map((event, index) => (
+            sortedEvents.map((event, index) => (
               <Box key={event.event_id}>
                 <Stack
                   direction="row"
@@ -153,7 +157,7 @@ const HomeUpcommingEvents: React.FC<HomeUpcommingEventsProps> = ({
                     </Typography>
                   </Box>
                 </Stack>
-                {index !== filteredEvents.length - 1 && <Divider />}
+                {index !== sortedEvents.length - 1 && <Divider />}
               </Box>
             ))
           )
